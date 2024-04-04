@@ -23,7 +23,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Button } from "@/components/ui/button";
 import { DotsHorizontalIcon, TrashIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 
-export  function CategoriaEvento() {
+export function CategoriaEvento() {
     return (
         <div className="rounded-md border">
             <Table>
