@@ -1,13 +1,12 @@
 'use client'
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import {CategoriaEvento} from "../categoriaEvento/page"
 
-export default function Dashboard() {
+export default function Dashboard({children}) {
     return (
         <>
             <div className="flex items-center">
-                <h1 className="text-lg font-semibold md:text-2xl">Categoria de Evento</h1>
+                <h1 className="text-lg font-semibold md:text-2xl">Categoria de Eventosssssssssssssss</h1>
             </div>
             <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
                 <div className="flex flex-col items-center gap-1 text-center">
@@ -18,7 +17,7 @@ export default function Dashboard() {
                         You can start selling as soon as you add a product.
                     </p>
                     <Button className="mt-4">Add Product</Button> */}
-                    <CategoriaEvento />
+                    {children}
                 </div>
             </div>
         </>

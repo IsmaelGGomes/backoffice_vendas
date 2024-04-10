@@ -12,3 +12,54 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model CategoriaIngresso {
+  id       String     @id @default(uuid())
+  nome     String
+  Ingresso Ingresso[]
+
+  @@map("categoria_ingressos")
+}
+
+model LotesIngresso {
+  id        String     @id @default(uuid())
+  nome_lote String
+  qtdMax    Int
+  qtdMin    Int
+  Ingresso  Ingresso[]
+
+  @@map("lotes_ingressos")
+}
+
+model Ingresso {
+  id                  String            @id @default(uuid())
+  qtd                 String
+  lote                LotesIngresso     @relation(fields: [lotesIngressoID], references: [id])
+  lotesIngressoID     String
+  categoria           CategoriaIngresso @relation(fields: [categoriaIngressoID], references: [id])
+  categoriaIngressoID String
+  valor               Float
+  desconto            Float
+
+  @@map("ingressos")
+}
+
+model Evento {
+  id        String   @id @default(uuid())
+  nome      String
+  data      DateTime
+  local     String
+  descricao String?
+
+  @@map("eventos")
+}
+
+model Cliente {
+  id     String @id @default(uuid())
+  nome   String
+  email  String
+  cpf    String?
+  numero Int?
+
+  @@map("clientes")
+}
