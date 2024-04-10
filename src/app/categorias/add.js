@@ -17,27 +17,40 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import toast from 'react-hot-toast';
+import { yupResolver } from '@hookform/resolvers/yup';
+import axios from "axios";
 
-export  function Adicionar() {
-    const [titulo, setTitulo] = useState("");
-    const [preco, setPreco] = useState("");
-    const [pagina, setPagina] = useState("");
-    const [autor, setAutor] = useState("");
+export function Adicionar({ updateData, setUpdate }) {
+    const RegisterSchema = yup.object().shape({
+        nome: yup.string()
+            .required("Nome da categoria obrigatório"),
+    });
+
     const [open, setOpen] = useState(false);
-    // const router = useRouter();
 
-    /* const salvar = async () => {
-        const livro = { titulo, preco, pagina, autor };
-        try {
-            let res = await axios.post("/api/livros", livro);
-            // router.push("/livros");
-            setOpen(false)
-            updateData(!setUpdate)
-        } catch (err) {
-            console.error("Erro na requisicao");
-        }
-    } */
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({ resolver: yupResolver(RegisterSchema) });
 
+
+    const onSubmit = async (data) => {
+        axios.post('/api/ingresso', data)
+            .then((response) => {
+                toast.success('Categoria cadastrada com sucesso!');
+                setOpen(false)
+                updateData(!setUpdate)
+                // router.replace('/auth/signin');
+            })
+            .catch((error) => {
+                toast.error(error?.response?.data?.message || 'Erro ao cadastrar !');
+            })
+    };
+    
     return (
         <>
             <Dialog open={open} onOpenChange={setOpen}>
@@ -46,23 +59,32 @@ export  function Adicionar() {
                 </DialogTrigger>
 
                 <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                        <DialogTitle>Adicionar Categoria de Ingressos</DialogTitle>
-                    </DialogHeader>
-                    <div className="w-full max-w-sm mx-auto">
-                        <div className="space-y-6">
-                            <div className="space-y-1">
-                                <Label htmlFor="name">Categoria</Label>
-                                <Input onChange={(e) => setTitulo(e.target.value)} id="name" placeholder="Ex: Vip, Meia, Inteira" />
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <DialogHeader>
+                            <DialogTitle>Adicionar Categoria de Ingressos</DialogTitle>
+                        </DialogHeader>
+                        <div className="w-full max-w-sm mx-auto">
+                            <div className="space-y-6">
+                                <div className="space-y-1">
+                                    <Label htmlFor="name">Categoria</Label>
+                                    {/* <Input id="name" placeholder="Ex: Vip, Meia, Inteira" /> */}
+                                    <Input
+                                        {...register("nome")}
+                                        type="text"
+                                        autoComplete="nome"
+                                        placeholder="Ex: Vip, Meia, Inteira"
+                                    />
+                                </div>
+                                {errors.nome && <p className="mt-2 text-sm text-red-600" id="nome-error">{errors.nome.message}</p>}
                             </div>
                         </div>
-                    </div>
-                    <DialogFooter className="mt-4">
-                        <DialogClose asChild>
-                            <Button variant="outline" type="button" className="" >Cancelar</Button>
-                        </DialogClose>
-                        <Button onClick={() => salvar()}>Salvar</Button>
-                    </DialogFooter>
+                        <DialogFooter className="mt-4">
+                            <DialogClose asChild>
+                                <Button variant="outline" type="button" className="" >Cancelar</Button>
+                            </DialogClose>
+                            <Button type="submit">Salvar</Button>
+                        </DialogFooter>
+                    </form>
                 </DialogContent>
             </Dialog>
         </>

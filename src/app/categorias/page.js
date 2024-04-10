@@ -7,27 +7,19 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 
 import { Adicionar } from "./add"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { DotsHorizontalIcon, TrashIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function CategoriaEvento() {
     const [data, setData] = useState([]);
+    const [isAdd, setIsAdd] = useState(false);
+
+    const updateData = (newValue) => {
+        setIsAdd(newValue)
+    }
+
     useEffect(() => {
         axios.get("/api/ingresso")
             .then((res) => {
@@ -36,11 +28,11 @@ export default function CategoriaEvento() {
             .catch(() => {
                 console.error("Erro na comunicacao com o Backend")
             })
-    }, []);
+    }, [isAdd]);
     return (
         <div className="px-[560px] py-10">
             <div className="my-2 mb-4 flex justify-end">
-                <Adicionar />
+                <Adicionar updateData={updateData} setUpdate={isAdd} />
             </div>
             <div className="rounded-md border">
                 <Table>
