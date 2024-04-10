@@ -13,7 +13,7 @@ export default function RootLayout({ children, title }) {
     <html lang="pt-br" className="">
       <body className="min-h-screen bg-background font-sans antialiased">
         <Toaster />
-        <SessionProvider>
+        {/* <SessionProvider> */}
           <div className="relative flex min-h-screen flex-col">
             <div className="w-full h-full theme-zinc">
               <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -41,7 +41,7 @@ export default function RootLayout({ children, title }) {
               </div>
             </div>
           </div>
-        </SessionProvider>
+        {/* </SessionProvider> */}
       </body>
     </html>
   );

@@ -1,11 +1,16 @@
 import { PrismaClient } from '@prisma/client'
 
-export async function createCategoria(user) {
-    let { email, first_name, last_name, password, is_admin } = user;
-    if (!email || !first_name || !last_name || !password) {
+export async function createCategoria(categoria) {
+    let { nome } = categoria;
+    if (!nome ) {
         throw new Error('Campos obrigatorios não foram preenchidos')
     }
 
     const prisma = new PrismaClient()
-    return await prisma.user.create({ data: { email, first_name, last_name, password, is_admin } });
+    return await prisma.categoriaIngresso.create({ data: { nome } });
+}
+
+export async function getCategoria() {
+    const prisma = new PrismaClient()
+    return await prisma.categoriaIngresso.findMany();
 }
