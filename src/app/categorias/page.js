@@ -21,7 +21,7 @@ export default function CategoriaEvento() {
     }
 
     useEffect(() => {
-        axios.get("/api/ingresso")
+        axios.get("/api/categoria")
             .then((res) => {
                 setData(res.data);
             })

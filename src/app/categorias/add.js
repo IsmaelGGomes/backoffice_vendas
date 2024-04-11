@@ -39,7 +39,7 @@ export function Adicionar({ updateData, setUpdate }) {
 
 
     const onSubmit = async (data) => {
-        axios.post('/api/ingresso', data)
+        axios.post('/api/categoria', data)
             .then((response) => {
                 toast.success('Categoria cadastrada com sucesso!');
                 setOpen(false)
