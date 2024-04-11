@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,15 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import toast from 'react-hot-toast';
@@ -25,28 +34,63 @@ import axios from "axios";
 
 export function Adicionar({ updateData, setUpdate }) {
     const RegisterSchema = yup.object().shape({
-        qtd: yup.string()
-            .required("Quantidade obrigatório"),
+        qtd: yup.number()
+            .required("Campo obrigatório"),
         lote_name: yup.string()
-            .required("Quantidade obrigatório"),
+            .required("Lote obrigatório"),
         categoria_name: yup.string()
-            .required("Quantidade obrigatório"),
+            .required("Categoria obrigatório"),
         evento_name: yup.string()
-            .required("Quantidade obrigatório"),
+            .required("Evento obrigatório"),
         valor: yup.number()
-            .required("Quantidade obrigatório"),
+            .required("Valor obrigatório"),
     });
 
     const [open, setOpen] = useState(false);
+    const [lote, setLote] = useState([]);
+    const [categoria, setCategoria] = useState([]);
+    const [evento, setEvento] = useState([]);
 
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm({ resolver: yupResolver(RegisterSchema) });
+    } = useForm({
+        mode: "onChange",
+        resolver: yupResolver(RegisterSchema)
+    });
 
+
+    useEffect(() => {
+        axios.get("/api/lote")
+            .then((res) => {
+                setLote(res.data);
+            })
+            .catch(() => {
+                console.error("Erro na comunicacao com o Backend")
+            })
+    }, []);
+    useEffect(() => {
+        axios.get("/api/categoria")
+            .then((res) => {
+                setCategoria(res.data);
+            })
+            .catch(() => {
+                console.error("Erro na comunicacao com o Backend")
+            })
+    }, []);
+    useEffect(() => {
+        axios.get("/api/evento")
+            .then((res) => {
+                setEvento(res.data);
+            })
+            .catch(() => {
+                console.error("Erro na comunicacao com o Backend")
+            })
+    }, []);
 
     const onSubmit = async (data) => {
+        console.log(data)
         axios.post('/api/ingresso', data)
             .then((response) => {
                 toast.success('Ingresso cadastrado com sucesso!');
@@ -78,7 +122,7 @@ export function Adicionar({ updateData, setUpdate }) {
                                     {/* <Input id="name" placeholder="Ex: Vip, Meia, Inteira" /> */}
                                     <Input
                                         {...register("qtd")}
-                                        type="text"
+                                        type="number"
                                         autoComplete="qtd"
                                         placeholder="Quantidade de ingressos"
                                     />
@@ -87,53 +131,50 @@ export function Adicionar({ updateData, setUpdate }) {
                             </div>
                         </div>
                         <div className="w-full max-w-sm mx-auto mt-6">
-                            <div className="space-y-6">
-                                <div className="space-y-1">
+                            <div className="space-x-2 flex flex-row">
+                                <div>
                                     <Label htmlFor="name">Lote</Label>
-                                    {/* <Input id="name" placeholder="Ex: Vip, Meia, Inteira" /> */}
-                                    <Input
-                                        {...register("lote_name")}
-                                        type="text"
-                                        autoComplete="lote_name"
-                                        placeholder="Quantidade de ingressos"
-                                    />
+                                    <Select {...register("lote_name")}>
+
+                                        <SelectTrigger className="w-[180px]">
+                                            <SelectValue placeholder="Selecione o lote" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                {lote.map((item) => (
+                                                    <SelectItem value={item.id}>{item.nome_lote}</SelectItem>
+                                                ))}
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                    {errors.lote_name && <p className="mt-2 text-sm text-red-600" id="lote_name-error">{errors.lote_name.message}</p>}
                                 </div>
-                                {errors.lote_name && <p className="mt-2 text-sm text-red-600" id="lote_name-error">{errors.lote_name.message}</p>}
+                                <div className="">
+                                    <Label htmlFor="name">Categoria</Label>
+                                    <Select
+                                        {...register("categoria_name")}>
+
+                                        <SelectTrigger className="w-[180px]">
+                                            <SelectValue placeholder="Selecione a categoria" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectGroup>
+                                                    {categoria.map((item) => (
+                                                        <SelectItem value={item.id}>{item.nome}</SelectItem>
+                                                    ))}
+                                                </SelectGroup>
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                    {errors.categoria_name && <p className="mt-2 text-sm text-red-600" id="categoria_name-error">{errors.categoria_name.message}</p>}
+                                </div>
                             </div>
                         </div>
-                        <div className="w-full max-w-sm mx-auto mt-6">
-                            <div className="space-y-6">
-                                <div className="space-y-1">
-                                    <Label htmlFor="name">Categoria do Ingresso</Label>
-                                    {/* <Input id="name" placeholder="Ex: Vip, Meia, Inteira" /> */}
-                                    <Input
-                                        {...register("categoria_name")}
-                                        type="text"
-                                        autoComplete="categoria_name"
-                                        placeholder="Quantidade de ingressos"
-                                    />
-                                </div>
-                                {errors.categoria_name && <p className="mt-2 text-sm text-red-600" id="categoria_name-error">{errors.categoria_name.message}</p>}
-                            </div>
-                        </div>
-                        <div className="w-full max-w-sm mx-auto mt-6">
-                            <div className="space-y-6">
-                                <div className="space-y-1">
-                                    <Label htmlFor="name">Tipo de evento</Label>
-                                    {/* <Input id="name" placeholder="Ex: Vip, Meia, Inteira" /> */}
-                                    <Input
-                                        {...register("evento_name")}
-                                        type="text"
-                                        autoComplete="evento_name"
-                                        placeholder="Quantidade de ingressos"
-                                    />
-                                </div>
-                                {errors.evento_name && <p className="mt-2 text-sm text-red-600" id="evento_name-error">{errors.evento_name.message}</p>}
-                            </div>
-                        </div>
-                        <div className="w-full max-w-sm mx-auto mt-6">
-                            <div className="space-y-6">
-                                <div className="space-y-1">
+
+                        <div className="w-full  space-x-1 mt-6 flex flex-row">
+                            <div className="">
+                                <div className="">
                                     <Label htmlFor="name">Valor</Label>
                                     {/* <Input id="name" placeholder="Ex: Vip, Meia, Inteira" /> */}
                                     <Input
@@ -144,6 +185,26 @@ export function Adicionar({ updateData, setUpdate }) {
                                     />
                                 </div>
                                 {errors.valor && <p className="mt-2 text-sm text-red-600" id="valor-error">{errors.valor.message}</p>}
+                            </div>
+                            <div className="">
+                                <Label htmlFor="name">Evento</Label>
+                                <Select
+                                    {...register("evento_name")}>
+
+                                    <SelectTrigger className="w-[180px]">
+                                        <SelectValue placeholder="Selecione o evento" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectGroup>
+                                                {evento.map((item) => (
+                                                    <SelectItem value={item.id}>{item.nome}</SelectItem>
+                                                ))}
+                                            </SelectGroup>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                                {errors.evento_name && <p className="mt-2 text-sm text-red-600" id="evento_name-error">{errors.evento_name.message}</p>}
                             </div>
                         </div>
                         <DialogFooter className="mt-4">

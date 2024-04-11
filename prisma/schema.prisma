@@ -33,7 +33,7 @@ model LotesIngresso {
 
 model Ingresso {
   id                  String            @id @default(uuid())
-  qtd                 String
+  qtd                 Int
   lote                LotesIngresso     @relation(fields: [lotesIngressoID], references: [id])
   lotesIngressoID     String
   categoria           CategoriaIngresso @relation(fields: [categoriaIngressoID], references: [id])

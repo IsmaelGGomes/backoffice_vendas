@@ -12,7 +12,7 @@ export default async function handler(req, res) {
                 // let { nome } = created;
                 res.status(201).send("Sucess");
             } catch (error) {
-                res.status(500).send("ERRO DA API");
+                res.status(500).send(error.message);
             }
             break;
         case 'GET':

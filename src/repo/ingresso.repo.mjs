@@ -5,7 +5,7 @@ export async function createIngresso(req_ingresso) {
     /* if (!nome_lote || !qtdMax || !qtdMin) {
         throw new Error('Campos obrigatorios não foram preenchidos')
     } */
-    // console.log(req_ingresso)
+    console.log(req_ingresso)
 
     const prisma = new PrismaClient()
     return await prisma.ingresso.create({
@@ -13,17 +13,17 @@ export async function createIngresso(req_ingresso) {
             qtd,
             lote: {
                 connect: {
-                    nome_lote: lote_name
+                    id: lote_name
                 }
             },
             categoria: {
                 connect: {
-                    nome: categoria_name
+                    id: categoria_name
                 }
             },
             evento: {
                 connect: {
-                    nome: evento_name
+                    id: evento_name
                 }
             },
             valor

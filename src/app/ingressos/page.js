@@ -38,7 +38,6 @@ export default function CategoriaEvento() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>ID</TableHead>
                             <TableHead>Quantidade</TableHead>
                             <TableHead>Lote</TableHead>
                             <TableHead>Categoria</TableHead>
