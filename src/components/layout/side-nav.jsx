@@ -1,6 +1,6 @@
 'use client'
 import { HomeIcon, UsersIcon } from '@radix-ui/react-icons';
-import { Home, LineChart, Package, ShoppingCart, Users } from 'lucide-react';
+import { Home, LineChart, Package, ShoppingCart, Users, Headset } from 'lucide-react';
 import {Badge} from "@/components/ui/badge";
 import Link from 'next/link';
 import React from 'react';
@@ -17,14 +17,18 @@ export function SideNav() {
                     Dashboard
                 </Link>
                 <Link
-                    href="#"
+                    href="/ingressos"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                >
+                    <Headset className="h-4 w-4" />
+                    Ingressos
+                </Link>
+                <Link
+                    href="/eventos"
                     className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                 >
                     <ShoppingCart className="h-4 w-4" />
                     Eventos
-                    {/* <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                        6
-                    </Badge> */}
                 </Link>
                 <Link
                     href="/categorias"
@@ -34,14 +38,14 @@ export function SideNav() {
                     Categoria de Ingressos{" "}
                 </Link>
                 <Link
-                    href="#"
+                    href="/lotes"
                     className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                 >
                     <Users className="h-4 w-4" />
                     Lotes de Ingresso
                 </Link>
                 <Link
-                    href="#"
+                    href="/clientes"
                     className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                 >
                     <LineChart className="h-4 w-4" />

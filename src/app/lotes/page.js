@@ -21,7 +21,7 @@ export default function CategoriaEvento() {
     }
 
     useEffect(() => {
-        axios.get("/api/ingresso")
+        axios.get("/api/lote")
             .then((res) => {
                 setData(res.data);
             })
@@ -38,15 +38,17 @@ export default function CategoriaEvento() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>ID</TableHead>
-                            <TableHead>Nome Categoria</TableHead>
+                            <TableHead>Nome Lote</TableHead>
+                            <TableHead>QTD Máxima</TableHead>
+                            <TableHead>QTD Mínima</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {data.map((item) => (
                             <TableRow >
-                                <TableCell key={item}>{item.id}</TableCell>
-                                <TableCell >{item.nome}</TableCell>
+                                <TableCell key={item}>{item.nome_lote}</TableCell>
+                                <TableCell >{item.qtdMax}</TableCell>
+                                <TableCell >{item.qtdMin}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

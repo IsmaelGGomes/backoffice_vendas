@@ -19,9 +19,9 @@ export default function CategoriaEvento() {
     const updateData = (newValue) => {
         setIsAdd(newValue)
     }
-
+    
     useEffect(() => {
-        axios.get("/api/ingresso")
+        axios.get("/api/evento")
             .then((res) => {
                 setData(res.data);
             })
@@ -38,15 +38,19 @@ export default function CategoriaEvento() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>ID</TableHead>
-                            <TableHead>Nome Categoria</TableHead>
+                            <TableHead>Nome</TableHead>
+                            <TableHead>Data</TableHead>
+                            <TableHead>Local</TableHead>
+                            <TableHead>Descricao</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {data.map((item) => (
                             <TableRow >
-                                <TableCell key={item}>{item.id}</TableCell>
-                                <TableCell >{item.nome}</TableCell>
+                                <TableCell key={item}>{item.nome}</TableCell>
+                                <TableCell >{new Date(item.data).toLocaleDateString("pt-BR")}</TableCell>
+                                <TableCell >{item.local}</TableCell>
+                                <TableCell >{item.descricao}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

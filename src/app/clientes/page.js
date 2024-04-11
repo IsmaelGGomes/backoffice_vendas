@@ -21,7 +21,7 @@ export default function CategoriaEvento() {
     }
 
     useEffect(() => {
-        axios.get("/api/ingresso")
+        axios.get("/api/cliente")
             .then((res) => {
                 setData(res.data);
             })
@@ -38,15 +38,19 @@ export default function CategoriaEvento() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>ID</TableHead>
-                            <TableHead>Nome Categoria</TableHead>
+                            <TableHead>Nome</TableHead>
+                            <TableHead>Email</TableHead>
+                            <TableHead>CPF</TableHead>
+                            <TableHead>Número</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {data.map((item) => (
                             <TableRow >
-                                <TableCell key={item}>{item.id}</TableCell>
-                                <TableCell >{item.nome}</TableCell>
+                                <TableCell key={item}>{item.nome}</TableCell>
+                                <TableCell >{item.email}</TableCell>
+                                <TableCell >{item.cpf}</TableCell>
+                                <TableCell >{item.numero}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
