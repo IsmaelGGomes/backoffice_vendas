@@ -39,14 +39,21 @@ export default function CategoriaEvento() {
                     <TableHeader>
                         <TableRow>
                             <TableHead>ID</TableHead>
-                            <TableHead>Nome Categoria</TableHead>
+                            <TableHead>Quantidade</TableHead>
+                            <TableHead>Lote</TableHead>
+                            <TableHead>Categoria</TableHead>
+                            <TableHead>Evento</TableHead>
+                            <TableHead>Valor</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {data.map((item) => (
                             <TableRow >
-                                <TableCell key={item}>{item.id}</TableCell>
-                                <TableCell >{item.nome}</TableCell>
+                                <TableCell key={item}>{item.qtd}</TableCell>
+                                <TableCell >{item.lote}</TableCell>
+                                <TableCell >{item.categoria}</TableCell>
+                                <TableCell >{item.evento}</TableCell>
+                                <TableCell >{item.valor}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

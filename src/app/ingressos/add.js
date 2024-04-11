@@ -25,8 +25,16 @@ import axios from "axios";
 
 export function Adicionar({ updateData, setUpdate }) {
     const RegisterSchema = yup.object().shape({
-        nome: yup.string()
-            .required("Nome da categoria obrigatório"),
+        qtd: yup.string()
+            .required("Quantidade obrigatório"),
+        lote_name: yup.string()
+            .required("Quantidade obrigatório"),
+        categoria_name: yup.string()
+            .required("Quantidade obrigatório"),
+        evento_name: yup.string()
+            .required("Quantidade obrigatório"),
+        valor: yup.number()
+            .required("Quantidade obrigatório"),
     });
 
     const [open, setOpen] = useState(false);
@@ -41,7 +49,7 @@ export function Adicionar({ updateData, setUpdate }) {
     const onSubmit = async (data) => {
         axios.post('/api/ingresso', data)
             .then((response) => {
-                toast.success('Categoria cadastrada com sucesso!');
+                toast.success('Ingresso cadastrado com sucesso!');
                 setOpen(false)
                 updateData(!setUpdate)
                 // router.replace('/auth/signin');
@@ -50,7 +58,7 @@ export function Adicionar({ updateData, setUpdate }) {
                 toast.error(error?.response?.data?.message || 'Erro ao cadastrar !');
             })
     };
-    
+
     return (
         <>
             <Dialog open={open} onOpenChange={setOpen}>
@@ -66,21 +74,81 @@ export function Adicionar({ updateData, setUpdate }) {
                         <div className="w-full max-w-sm mx-auto mt-6">
                             <div className="space-y-6">
                                 <div className="space-y-1">
-                                    <Label htmlFor="name">Categoria</Label>
+                                    <Label htmlFor="name">Quantidade</Label>
                                     {/* <Input id="name" placeholder="Ex: Vip, Meia, Inteira" /> */}
                                     <Input
-                                        {...register("nome")}
+                                        {...register("qtd")}
                                         type="text"
-                                        autoComplete="nome"
-                                        placeholder="Ex: Vip, Meia, Inteira"
+                                        autoComplete="qtd"
+                                        placeholder="Quantidade de ingressos"
                                     />
                                 </div>
-                                {errors.nome && <p className="mt-2 text-sm text-red-600" id="nome-error">{errors.nome.message}</p>}
+                                {errors.qtd && <p className="mt-2 text-sm text-red-600" id="qtd-error">{errors.qtd.message}</p>}
+                            </div>
+                        </div>
+                        <div className="w-full max-w-sm mx-auto mt-6">
+                            <div className="space-y-6">
+                                <div className="space-y-1">
+                                    <Label htmlFor="name">Lote</Label>
+                                    {/* <Input id="name" placeholder="Ex: Vip, Meia, Inteira" /> */}
+                                    <Input
+                                        {...register("lote_name")}
+                                        type="text"
+                                        autoComplete="lote_name"
+                                        placeholder="Quantidade de ingressos"
+                                    />
+                                </div>
+                                {errors.lote_name && <p className="mt-2 text-sm text-red-600" id="lote_name-error">{errors.lote_name.message}</p>}
+                            </div>
+                        </div>
+                        <div className="w-full max-w-sm mx-auto mt-6">
+                            <div className="space-y-6">
+                                <div className="space-y-1">
+                                    <Label htmlFor="name">Categoria do Ingresso</Label>
+                                    {/* <Input id="name" placeholder="Ex: Vip, Meia, Inteira" /> */}
+                                    <Input
+                                        {...register("categoria_name")}
+                                        type="text"
+                                        autoComplete="categoria_name"
+                                        placeholder="Quantidade de ingressos"
+                                    />
+                                </div>
+                                {errors.categoria_name && <p className="mt-2 text-sm text-red-600" id="categoria_name-error">{errors.categoria_name.message}</p>}
+                            </div>
+                        </div>
+                        <div className="w-full max-w-sm mx-auto mt-6">
+                            <div className="space-y-6">
+                                <div className="space-y-1">
+                                    <Label htmlFor="name">Tipo de evento</Label>
+                                    {/* <Input id="name" placeholder="Ex: Vip, Meia, Inteira" /> */}
+                                    <Input
+                                        {...register("evento_name")}
+                                        type="text"
+                                        autoComplete="evento_name"
+                                        placeholder="Quantidade de ingressos"
+                                    />
+                                </div>
+                                {errors.evento_name && <p className="mt-2 text-sm text-red-600" id="evento_name-error">{errors.evento_name.message}</p>}
+                            </div>
+                        </div>
+                        <div className="w-full max-w-sm mx-auto mt-6">
+                            <div className="space-y-6">
+                                <div className="space-y-1">
+                                    <Label htmlFor="name">Valor</Label>
+                                    {/* <Input id="name" placeholder="Ex: Vip, Meia, Inteira" /> */}
+                                    <Input
+                                        {...register("valor")}
+                                        type="text"
+                                        autoComplete="valor"
+                                        placeholder="Quantidade de ingressos"
+                                    />
+                                </div>
+                                {errors.valor && <p className="mt-2 text-sm text-red-600" id="valor-error">{errors.valor.message}</p>}
                             </div>
                         </div>
                         <DialogFooter className="mt-4">
                             <DialogClose asChild>
-                                <Button variant="outline" type="button" className="" >Cancelar</Button>
+                                <Button variant="outline" type="button" className="">Cancelar</Button>
                             </DialogClose>
                             <Button type="submit">Salvar</Button>
                         </DialogFooter>

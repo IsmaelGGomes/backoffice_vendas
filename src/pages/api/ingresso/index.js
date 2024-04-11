@@ -1,13 +1,14 @@
-import { createCategoria, getCategoria } from "@/repo/categoria_ingresso.repo.mjs";
+import { createIngresso, getIngresso } from "@/repo/ingresso.repo.mjs";
 export default async function handler(req, res) {
     console.log("api/auth/signup");
     const method = req.method
     switch (method) {
         case 'POST':
-            let { nome } = req.body;
-            let new_item = { nome };
+            let { qtd, lote_name, categoria_name, evento_name, valor } = req.body;
+            let new_item = { qtd, lote_name, categoria_name, evento_name, valor };
+            // console.log(new_item);
             try {
-                let created = await createCategoria(new_item);
+                let created = await createIngresso(new_item);
                 // let { nome } = created;
                 res.status(201).send("Sucess");
             } catch (error) {
@@ -16,7 +17,7 @@ export default async function handler(req, res) {
             break;
         case 'GET':
             try {
-                let data = await getCategoria();
+                let data = await getIngresso();
                 // let { nome } = created;
                 res.status(200).json(data);
             } catch (error) {
