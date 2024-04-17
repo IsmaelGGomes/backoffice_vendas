@@ -40,6 +40,8 @@ model Ingresso {
   categoriaIngressoID String
   evento              Evento            @relation(fields: [eventoId], references: [id])
   eventoId            String
+  clients             Cliente           @relation(fields: [clientId], references: [id])
+  clientId            String
   valor               Float
   desconto            Float?
   Venda               Venda[]
@@ -59,11 +61,12 @@ model Evento {
 }
 
 model Cliente {
-  id     String  @id @default(uuid())
-  nome   String
-  email  String
-  cpf    String?
-  numero Int?
+  id       String     @id @default(uuid())
+  nome     String
+  email    String
+  cpf      String?
+  numero   Int?
+  Ingresso Ingresso[]
 
   @@map("clientes")
 }

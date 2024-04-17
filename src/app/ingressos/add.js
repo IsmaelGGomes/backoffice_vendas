@@ -11,21 +11,12 @@ import {
     Dialog,
     DialogClose,
     DialogContent,
-    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import toast from 'react-hot-toast';
@@ -44,19 +35,21 @@ export function Adicionar({ updateData, setUpdate }) {
             .required("Evento obrigatório"),
         valor: yup.number()
             .required("Valor obrigatório"),
+        cliente_name: yup.string()
+            .required("Cliente obrigatório"),
     });
 
     const [open, setOpen] = useState(false);
     const [lote, setLote] = useState([]);
     const [categoria, setCategoria] = useState([]);
     const [evento, setEvento] = useState([]);
+    const [cliente, setCliente] = useState([]);
 
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm({
-        mode: "onChange",
         resolver: yupResolver(RegisterSchema)
     });
 
@@ -69,8 +62,13 @@ export function Adicionar({ updateData, setUpdate }) {
             .catch(() => {
                 console.error("Erro na comunicacao com o Backend")
             })
-    }, []);
-    useEffect(() => {
+        axios.get("/api/evento")
+            .then((res) => {
+                setEvento(res.data);
+            })
+            .catch(() => {
+                console.error("Erro na comunicacao com o Backend")
+            })
         axios.get("/api/categoria")
             .then((res) => {
                 setCategoria(res.data);
@@ -78,11 +76,9 @@ export function Adicionar({ updateData, setUpdate }) {
             .catch(() => {
                 console.error("Erro na comunicacao com o Backend")
             })
-    }, []);
-    useEffect(() => {
-        axios.get("/api/evento")
+        axios.get("/api/cliente")
             .then((res) => {
-                setEvento(res.data);
+                setCliente(res.data);
             })
             .catch(() => {
                 console.error("Erro na comunicacao com o Backend")
@@ -99,6 +95,7 @@ export function Adicionar({ updateData, setUpdate }) {
                 // router.replace('/auth/signin');
             })
             .catch((error) => {
+                console.error(error.message);
                 toast.error(error?.response?.data?.message || 'Erro ao cadastrar !');
             })
     };
@@ -113,7 +110,7 @@ export function Adicionar({ updateData, setUpdate }) {
                 <DialogContent className="sm:max-w-[425px]">
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <DialogHeader>
-                            <DialogTitle>Adicionar Categoria de Ingressos</DialogTitle>
+                            <DialogTitle>Adicionar Ingressos</DialogTitle>
                         </DialogHeader>
                         <div className="w-full max-w-sm mx-auto mt-6">
                             <div className="space-y-6">
@@ -131,83 +128,73 @@ export function Adicionar({ updateData, setUpdate }) {
                             </div>
                         </div>
                         <div className="w-full max-w-sm mx-auto mt-6">
-                            <div className="space-x-2 flex flex-row">
-                                <div>
-                                    <Label htmlFor="name">Lote</Label>
-                                    <Select {...register("lote_name")}>
-
-                                        <SelectTrigger className="w-[180px]">
-                                            <SelectValue placeholder="Selecione o lote" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectGroup>
-                                                {lote.map((item) => (
-                                                    <SelectItem value={item.id}>{item.nome_lote}</SelectItem>
-                                                ))}
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
+                            <div className="space-x-4 flex flex-row">
+                                <div className="flex flex-col">
+                                    <Label htmlFor="name" className="mb-2">Lote</Label>
+                                    <select
+                                        className="border border-gray-300 rounded-lg block p-2 bg-white shadow w-[180px]"
+                                        {...register("lote_name")}
+                                    >
+                                        <option selected disabled>Selecione um lote</option>
+                                        {lote.map((item) => (
+                                            <option value={item.id}>{item.nome_lote}</option>
+                                        ))}
+                                    </select>
                                     {errors.lote_name && <p className="mt-2 text-sm text-red-600" id="lote_name-error">{errors.lote_name.message}</p>}
                                 </div>
-                                <div className="">
-                                    <Label htmlFor="name">Categoria</Label>
-                                    <Select
-                                        {...register("categoria_name")}>
+                                <div className="flex flex-col">
+                                    <Label htmlFor="name" className="mb-2">Categoria</Label>
 
-                                        <SelectTrigger className="w-[180px]">
-                                            <SelectValue placeholder="Selecione a categoria" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectGroup>
-                                                <SelectGroup>
-                                                    {categoria.map((item) => (
-                                                        <SelectItem value={item.id}>{item.nome}</SelectItem>
-                                                    ))}
-                                                </SelectGroup>
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
+                                    <select
+                                        className="border border-gray-300 rounded-lg block p-2 bg-white shadow w-[180px]"
+                                        {...register("categoria_name")}
+                                    >
+                                        <option selected disabled className="">Selecione uma Categoria</option>
+                                        {categoria.map((item) => (
+                                            <option value={item.id} className="text-black">{item.nome}</option>
+                                        ))}
+                                    </select>
                                     {errors.categoria_name && <p className="mt-2 text-sm text-red-600" id="categoria_name-error">{errors.categoria_name.message}</p>}
                                 </div>
                             </div>
                         </div>
 
-                        <div className="w-full  space-x-1 mt-6 flex flex-row">
-                            <div className="">
-                                <div className="">
-                                    <Label htmlFor="name">Valor</Label>
-                                    {/* <Input id="name" placeholder="Ex: Vip, Meia, Inteira" /> */}
-                                    <Input
-                                        {...register("valor")}
-                                        type="text"
-                                        autoComplete="valor"
-                                        placeholder="Quantidade de ingressos"
-                                    />
-                                </div>
-                                {errors.valor && <p className="mt-2 text-sm text-red-600" id="valor-error">{errors.valor.message}</p>}
+                        <div className="w-full space-x-4 mt-6 flex flex-row">
+                            <div className="flex flex-col">
+                                <Label htmlFor="selectField" className="mb-2">Cliente</Label>
+                                <select  {...register("cliente_name")} className="border border-gray-300 rounded-lg block p-2 bg-white shadow w-[180px] ">
+                                    <option selected disabled >Selecione um Cliente</option>
+                                    {cliente.map((item) => (
+                                        <option value={item.id}>{item.nome}</option>
+                                    ))}
+                                </select>
+                                {errors.cliente_name && <p className="mt-2 text-sm text-red-600" id="cliente_name-error">{errors.evento_name.message}</p>}
                             </div>
-                            <div className="">
-                                <Label htmlFor="name">Evento</Label>
-                                <Select
-                                    {...register("evento_name")}>
-
-                                    <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder="Selecione o evento" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectGroup>
-                                                {evento.map((item) => (
-                                                    <SelectItem value={item.id}>{item.nome}</SelectItem>
-                                                ))}
-                                            </SelectGroup>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
+                            <div className="flex flex-col">
+                                <Label htmlFor="selectField" className="mb-2">Evento</Label>
+                                <select  {...register("evento_name")} className="border border-gray-300 rounded-lg block p-2 bg-white shadow w-[180px] ">
+                                    <option selected disabled >Selecione um Evento</option>
+                                    {evento.map((item) => (
+                                        <option value={item.id}>{item.nome}</option>
+                                    ))}
+                                </select>
                                 {errors.evento_name && <p className="mt-2 text-sm text-red-600" id="evento_name-error">{errors.evento_name.message}</p>}
                             </div>
                         </div>
-                        <DialogFooter className="mt-4">
+                        <div className="w-full max-w-sm mx-auto mt-6">
+                            <div className="">
+                                <Label htmlFor="name">Valor</Label>
+                                {/* <Input id="name" placeholder="Ex: Vip, Meia, Inteira" /> */}
+                                <Input
+                                    {...register("valor")}
+                                    type="number"
+                                    autoComplete="valor"
+                                    placeholder="Quantidade de ingressos"
+                                />
+                            </div>
+                            {errors.valor && <p className="mt-2 text-sm text-red-600" id="evento_name-error">{errors.valor.message}</p>}
+                        </div>
+                        <DialogFooter className="mt-8">
                             <DialogClose asChild>
                                 <Button variant="outline" type="button" className="">Cancelar</Button>
                             </DialogClose>

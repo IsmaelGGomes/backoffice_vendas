@@ -29,7 +29,7 @@ export function Adicionar({ updateData, setUpdate }) {
             .required("Nome do lote obrigatório"),
         qtdMin: yup.number()
             .required("QTD mínima obrigatório")
-            .max(10,"Quantidade mínima deve ser maior que 10"),
+            .min(10,"Quantidade mínima deve ser maior que 10"),
         qtdMax: yup.number()
             .required("QTD máxima obrigatório")
             .max(100,"Quantidade máxima deve ser menor que 100"),

@@ -42,6 +42,7 @@ export default function CategoriaEvento() {
                             <TableHead>Lote</TableHead>
                             <TableHead>Categoria</TableHead>
                             <TableHead>Evento</TableHead>
+                            <TableHead>Cliente</TableHead>
                             <TableHead>Valor</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -49,9 +50,10 @@ export default function CategoriaEvento() {
                         {data.map((item) => (
                             <TableRow >
                                 <TableCell key={item}>{item.qtd}</TableCell>
-                                <TableCell >{item.lote}</TableCell>
-                                <TableCell >{item.categoria}</TableCell>
-                                <TableCell >{item.evento}</TableCell>
+                                <TableCell >{item.lote.nome_lote}</TableCell>
+                                <TableCell >{item.categoria.nome}</TableCell>
+                                <TableCell >{item.evento.nome}</TableCell>
+                                <TableCell >{item.clients.nome}</TableCell>
                                 <TableCell >{item.valor}</TableCell>
                             </TableRow>
                         ))}

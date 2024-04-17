@@ -4,8 +4,8 @@ export default async function handler(req, res) {
     const method = req.method
     switch (method) {
         case 'POST':
-            let { qtd, lote_name, categoria_name, evento_name, valor } = req.body;
-            let new_item = { qtd, lote_name, categoria_name, evento_name, valor };
+            let { qtd, lote_name, categoria_name, evento_name,cliente_name, valor } = req.body;
+            let new_item = { qtd, lote_name, categoria_name, cliente_name,evento_name, valor };
             // console.log(new_item);
             try {
                 let created = await createIngresso(new_item);
