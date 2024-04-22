@@ -9,14 +9,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import {
-    Activity,
-    ArrowUpRight,
-    CircleUser,
-    CreditCard,
     DollarSign,
-    Menu,
-    Package2,
-    Search,
     Users,
 } from "lucide-react"
 import {
@@ -24,11 +17,10 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button";
-import { getClientIngresso } from "@/repo/ingresso.repo.mjs";
 export default function Dashboard({ children }) {
     const [ingresso, SetIngresso] = useState([])
     const [clientIngresso, SetClientIngresso] = useState([])
+
     useEffect(() => {
         axios.get("/api/ingresso")
             .then((res) => {
@@ -37,14 +29,17 @@ export default function Dashboard({ children }) {
             .catch(() => {
                 console.error("Erro na comunicacao com o Backend")
             })
+        axios.get("/api/ingresso/all")
+            .then((res) => {
+                SetClientIngresso(res.data);
+            })
+            .catch(() => {
+                console.error("Erro na comunicacao com o Backend")
+            })
     }, []);
 
-    // const dataClienteIngresso = async () => {return await getClientIngresso("0b7a06c3-b5f2-41eb-bdbf-d612343b30d0")}
+    console.log(clientIngresso)
 
-    // useEffect(() => {
-    //     SetClientIngresso(dataClienteIngresso);
-    // }, [])
-    // console.log(dataClienteIngresso)
     const total_valor = ingresso.reduce((sum, product) => sum + product.valor, 0);
 
     const contagem_ingresso = ingresso.reduce((sum, product) => sum + product.qtd, 0);
@@ -86,24 +81,28 @@ export default function Dashboard({ children }) {
                     <Card x-chunk="dashboard-01-chunk-5">
                         <CardHeader>
                             <CardTitle className="text-xl">Clientes x Ingressos</CardTitle>
+                            <CardDescription>Qtd de ingressos comprados por clientes</CardDescription>
                         </CardHeader>
                         <CardContent className="grid gap-8">
-                            <div className="flex items-center gap-4">
-                                <Avatar className="hidden h-9 w-9 sm:flex">
-                                    <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                                    <AvatarFallback><Users className="h-4 w-4 text-muted-foreground" /></AvatarFallback>
-                                </Avatar>
-                                <div className="grid gap-1">
-                                    <p className="text-sm font-medium leading-none">
-                                        Olivia Martin
-                                    </p>
-                                    <p className="text-sm text-muted-foreground">
-                                        olivia.martin@email.com
-                                    </p>
-                                </div>
-                                <div className="ml-auto font-medium">+$1,999.00</div>
-                            </div>
-
+                            {clientIngresso.map((item) => {
+                                return (
+                                    <div className="flex items-center gap-4">
+                                        <Avatar className="hidden h-9 w-9 sm:flex">
+                                            <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                                            <AvatarFallback><Users className="h-4 w-4 text-muted-foreground" /></AvatarFallback>
+                                        </Avatar>
+                                        <div className="grid gap-1">
+                                            <p className="text-sm font-medium leading-none">
+                                                {item.nome}
+                                            </p>
+                                            <p className="text-sm text-muted-foreground">
+                                                {item.email}
+                                            </p>
+                                        </div>
+                                        <div className="ml-auto font-semibold">{item._count.Ingresso}</div>
+                                    </div>
+                                )
+                            })}
                         </CardContent>
                     </Card>
                 </div>

@@ -48,10 +48,14 @@ export async function getIngresso() {
     });
 }
 
-export async function getClientIngresso(id_cliente) {
+export async function getItem() {
     const prisma = new PrismaClient()
-    const data =  await prisma.ingresso.findMany({
-        where: id_cliente
-    });
-    return data
+    const formattedData = await prisma.cliente.findMany({
+        include: {
+            _count: {
+                select: { Ingresso: true },
+            },
+        },
+    })
+    return formattedData;
 }

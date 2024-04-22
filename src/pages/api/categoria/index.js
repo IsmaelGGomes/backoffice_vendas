@@ -1,6 +1,5 @@
 import { createCategoria, getCategoria } from "@/repo/categoria_ingresso.repo.mjs";
 export default async function handler(req, res) {
-    console.log("api/auth/signup");
     const method = req.method
     switch (method) {
         case 'POST':
