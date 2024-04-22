@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma:migrate": "npx prisma migrate"
+    "migrate": "prisma generate deploy",
+    "prisma:migrate": "prisma generate"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
